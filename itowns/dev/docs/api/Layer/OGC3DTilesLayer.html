@@ -116,7 +116,8 @@ CLASSIFICATION uses a classification property of the batch table to color points
     
     <li>
         <code>config.classificationScheme</code>
-        (optional)
+        (default: <code>ClassificationScheme.DEFAULT</code>)
+        
         
             &mdash; <span><p><a onclick="window.parent.goTo('api/Points/PointsMaterial.html','api/Points/PointsMaterial')" title="PointsMaterial">PointsMaterial</a> classification scheme</p></span>
         
@@ -408,7 +409,7 @@ has not yet been loaded.</li>
     
     
         intersects:
-            <span class="type">Array</span>
+            <span class="type">Array.&lt;THREE.Intersection></span>
     
 
 )
@@ -469,20 +470,20 @@ objects picked under mouse coordinates computed with view.pickObjectsAt(..).</p>
 
 <div class="method">
     <h3>
-        <span class="method-name">isValidData</span>
+        <span class="method-name">getMetadataFromIntersections</span>
         (
 
 
     
     
-        feature:
-            <span class="type"><a onclick="window.parent.goTo('api/Base/Feature.html','api/Base/Feature')" title="Feature">Feature</a></span>
+        intersections:
+            <span class="type">Array.&lt;THREE.Intersection></span>
     
 
 )
         :
             
-                <span class="type"><a onclick="window.parent.goTo('api/Base/Feature.html','api/Base/Feature')" title="Feature">Feature</a></span>
+                <span class="type">Promise.&lt;(Object|null)></span>
 
             
         
@@ -491,7 +492,16 @@ objects picked under mouse coordinates computed with view.pickObjectsAt(..).</p>
     
         
             <div class="description">
-                <p>Determines whether the specified feature is valid data.</p>
+                <p>Get the <a href="https://github.com/CesiumGS/3d-tiles/tree/main/specification/Metadata">metadata</a>
+of the closest intersected object from a list of intersections.</p>
+<p>This method retrieves structured metadata stored in GLTF 2.0 assets using
+the <a href="https://github.com/CesiumGS/glTF/tree/3d-tiles-next/extensions/2.0/Vendor/EXT_structural_metadata"><code>EXT_structural_metadata</code></a>
+extension.</p>
+<p>Internally, it uses the closest intersected point to index metadata
+stored in property attributes and textures.</p>
+<p>If present in GLTF 2.0 assets, this method leverages the
+<a href="%60https://github.com/CesiumGS/glTF/tree/3d-tiles-next/extensions/2.0/Vendor/EXT_mesh_features"><code>EXT_mesh_features</code></a>
+extension and the returned featured to index metadata stored in property tables.</p>
             </div>
         
     
@@ -499,7 +509,9 @@ objects picked under mouse coordinates computed with view.pickObjectsAt(..).</p>
     
                 <h4>Returns</h4>
                 
-                    <p>the feature is returned if it's valided</p>
+                    <ul>
+<li>the intersected object's metadata</li>
+</ul>
                 
 
     
@@ -509,10 +521,8 @@ objects picked under mouse coordinates computed with view.pickObjectsAt(..).</p>
 <ul class="params">
     
     <li>
-        <code>feature</code>
+        <code>intersections</code>
         
-        
-            &mdash; <span><p>The feature</p></span>
         
 
         
@@ -888,8 +898,8 @@ start loading)</p>
 
         <hr class="title-divider"/>
         <h2>Source</h2>
-        <a target="_blank" href="https://github.com/itowns/itowns/blob/master/src/Layer/OGC3DTilesLayer.js">
-            src/Layer/OGC3DTilesLayer.js
+        <a target="_blank" href="https://github.com/itowns/itowns/blob/master/packages/Main/src/Layer/OGC3DTilesLayer.js">
+            packages/Main/src/Layer/OGC3DTilesLayer.js
         </a>
 
 
